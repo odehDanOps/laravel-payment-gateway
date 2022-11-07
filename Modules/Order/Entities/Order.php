@@ -20,18 +20,6 @@ class Order extends Model
      * Default Currency for Order.
      */
     const DEFAULT_CURRENCY = "NGN";
-
-    /**
-     * returns Order By Id.
-     *
-     * @param $id
-     *
-     * @return mixed
-     */
-    public static function get($id)
-    {
-        return Order::find($id);
-    }
     
     protected static function newFactory()
     {

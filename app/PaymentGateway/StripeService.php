@@ -53,8 +53,8 @@ class StripeService extends Service
      * @return array
      */
     public function callPaymentGateway($_id, $order_id, $amount, $meta){
-		$success_url = url("/subscription/order/process-stripe-payment/?id={$_id}&orderId={$order_id}");
-		$cancel_url = url("/subscription/order/process-stripe-payment/?orderId={$order_id}");
+		$success_url = url("/order/process-stripe-payment/?id={$_id}&orderId={$order_id}");
+		$cancel_url = url("/order/process-stripe-payment/?orderId={$order_id}");
 
 		$set_locale = 'services.stripe.locale';
 		$set_secret_key = 'services.stripe.secret';

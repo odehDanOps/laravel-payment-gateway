@@ -3,9 +3,8 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Laravel</title>
-
         <!-- Fonts -->
         <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
         @vite('resources/css/app.css')
@@ -35,98 +34,207 @@
                     @endauth
                 </div>
             @endif
-            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-                <div class="flex items-center pt-8 sm:justify-start sm:pt-0">
-                    <p class="text-center ">
-                        <label class="text-gray-700" for="animals">
-                            Pay with
-                            <select id="payment_type" class="block w-52 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" name="animals">
-                                @foreach (\PaymentOption::getAll() as $key => $value)
-                                    @php($selected = Request::old('gender') == $key ? 'selected' : '')
-                                    <option 
-                                        value={{$key}} 
-                                        @if ($key == \PaymentOption::STRIPE)
-                                            selected
-                                        @endif>
-                                        {{$value}}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </label>
-                    </p>
-                </div>
+            <form id="paymentForm">
+                <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+                    <div class="flex items-center pt-8 sm:justify-start sm:pt-0">
+                        <p class="text-center ">
+                            <label class="text-gray-700" for="animals">
+                                Pay with
+                                <select
+                                    name="payment_type" 
+                                    id="paymentType" class="block w-52 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                                    @foreach (\PaymentOption::getAll() as $key => $value)
+                                        @php($selected = Request::old('gender') == $key ? 'selected' : '')
+                                        <option 
+                                            value={{$key}} 
+                                            @if ($key == \PaymentOption::STRIPE)
+                                                selected
+                                            @endif>
+                                            {{$value}}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </label>
+                        </p>
+                    </div>
 
-                <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
-                    <div class="shadow-lg rounded-2xl w-64 bg-white dark:bg-gray-800 p-4">
-                        <p class="text-gray-800 dark:text-gray-50 text-xl font-medium mb-4">
-                            Entreprise
-                        </p>
-                        <p class="text-gray-900 dark:text-white text-3xl font-bold">
-                            $100
-                            <span class="text-gray-300 text-sm">
-                                / month
-                            </span>
-                        </p>
-                        <p class="text-gray-600 dark:text-gray-100  text-xs mt-4">
-                            For most businesses that want to optimize web queries.
-                        </p>
-                        <ul class="text-sm text-gray-600 dark:text-gray-100 w-full mt-6 mb-6">
-                            <li class="mb-3 flex items-center ">
-                                <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" width="6" height="6" stroke="currentColor" fill="#10b981" viewBox="0 0 1792 1792">
-                                    <path d="M1412 734q0-28-18-46l-91-90q-19-19-45-19t-45 19l-408 407-226-226q-19-19-45-19t-45 19l-91 90q-18 18-18 46 0 27 18 45l362 362q19 19 45 19 27 0 46-19l543-543q18-18 18-45zm252 162q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z">
-                                    </path>
-                                </svg>
-                                All illimited components
-                            </li>
-                            <li class="mb-3 flex items-center ">
-                                <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" width="6" height="6" stroke="currentColor" fill="#10b981" viewBox="0 0 1792 1792">
-                                    <path d="M1412 734q0-28-18-46l-91-90q-19-19-45-19t-45 19l-408 407-226-226q-19-19-45-19t-45 19l-91 90q-18 18-18 46 0 27 18 45l362 362q19 19 45 19 27 0 46-19l543-543q18-18 18-45zm252 162q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z">
-                                    </path>
-                                </svg>
-                                Own custom Tailwind styles
-                            </li>
-                            <li class="mb-3 flex items-center ">
-                                <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" width="6" height="6" stroke="currentColor" fill="#10b981" viewBox="0 0 1792 1792">
-                                    <path d="M1412 734q0-28-18-46l-91-90q-19-19-45-19t-45 19l-408 407-226-226q-19-19-45-19t-45 19l-91 90q-18 18-18 46 0 27 18 45l362 362q19 19 45 19 27 0 46-19l543-543q18-18 18-45zm252 162q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z">
-                                    </path>
-                                </svg>
-                                Unlimited Templates
-                            </li>
-                            <li class="mb-3 flex items-center ">
-                                <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" width="6" height="6" stroke="currentColor" fill="#10b981" viewBox="0 0 1792 1792">
-                                    <path d="M1412 734q0-28-18-46l-91-90q-19-19-45-19t-45 19l-408 407-226-226q-19-19-45-19t-45 19l-91 90q-18 18-18 46 0 27 18 45l362 362q19 19 45 19 27 0 46-19l543-543q18-18 18-45zm252 162q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z">
-                                    </path>
-                                </svg>
-                                Free premium dashboard
-                            </li>
-                            <li class="mb-3 flex items-center ">
-                                <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" width="6" height="6" stroke="currentColor" fill="#10b981" viewBox="0 0 1792 1792">
-                                    <path d="M1412 734q0-28-18-46l-91-90q-19-19-45-19t-45 19l-408 407-226-226q-19-19-45-19t-45 19l-91 90q-18 18-18 46 0 27 18 45l362 362q19 19 45 19 27 0 46-19l543-543q18-18 18-45zm252 162q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z">
-                                    </path>
-                                </svg>
-                                Best ranking
-                            </li>
-                            <li class="mb-3 flex items-center opacity-50">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" class="h-6 w-6 mr-2" fill="red" viewBox="0 0 1792 1792">
-                                    <path d="M1277 1122q0-26-19-45l-181-181 181-181q19-19 19-45 0-27-19-46l-90-90q-19-19-46-19-26 0-45 19l-181 181-181-181q-19-19-45-19-27 0-46 19l-90 90q-19 19-19 46 0 26 19 45l181 181-181 181q-19 19-19 45 0 27 19 46l90 90q19 19 46 19 26 0 45-19l181-181 181 181q19 19 45 19 27 0 46-19l90-90q19-19 19-46zm387-226q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z">
-                                    </path>
-                                </svg>
-                                Prenium svg
-                            </li>
-                            <li class="mb-3 flex items-center opacity-50">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" class="h-6 w-6 mr-2" fill="red" viewBox="0 0 1792 1792">
-                                    <path d="M1277 1122q0-26-19-45l-181-181 181-181q19-19 19-45 0-27-19-46l-90-90q-19-19-46-19-26 0-45 19l-181 181-181-181q-19-19-45-19-27 0-46 19l-90 90q-19 19-19 46 0 26 19 45l181 181-181 181q-19 19-19 45 0 27 19 46l90 90q19 19 46 19 26 0 45-19l181-181 181 181q19 19 45 19 27 0 46-19l90-90q19-19 19-46zm387-226q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z">
-                                    </path>
-                                </svg>
-                                My wife
-                            </li>
-                        </ul>
-                        <button type="button" class="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                            Choose plan
-                        </button>
+                    <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
+                        <div class="shadow-lg rounded-2xl w-64 bg-white dark:bg-gray-800 p-4">
+                            <p class="text-gray-800 dark:text-gray-50 text-xl font-medium mb-4">
+                                Entreprise
+                            </p>
+                            <p class="text-gray-900 dark:text-white text-3xl font-bold">
+                                $100
+                                <input type="hidden" name="amount" id="amount" value="100">
+                                <span class="text-gray-300 text-sm">
+                                    / month
+                                </span>
+                            </p>
+                            <p class="text-gray-600 dark:text-gray-100  text-xs mt-4">
+                                For most businesses that want to optimize web queries.
+                            </p>
+                            <ul class="text-sm text-gray-600 dark:text-gray-100 w-full mt-6 mb-6">
+                                <li class="mb-3 flex items-center ">
+                                    <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" width="6" height="6" stroke="currentColor" fill="#10b981" viewBox="0 0 1792 1792">
+                                        <path d="M1412 734q0-28-18-46l-91-90q-19-19-45-19t-45 19l-408 407-226-226q-19-19-45-19t-45 19l-91 90q-18 18-18 46 0 27 18 45l362 362q19 19 45 19 27 0 46-19l543-543q18-18 18-45zm252 162q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z">
+                                        </path>
+                                    </svg>
+                                    All illimited components
+                                </li>
+                                <li class="mb-3 flex items-center ">
+                                    <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" width="6" height="6" stroke="currentColor" fill="#10b981" viewBox="0 0 1792 1792">
+                                        <path d="M1412 734q0-28-18-46l-91-90q-19-19-45-19t-45 19l-408 407-226-226q-19-19-45-19t-45 19l-91 90q-18 18-18 46 0 27 18 45l362 362q19 19 45 19 27 0 46-19l543-543q18-18 18-45zm252 162q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z">
+                                        </path>
+                                    </svg>
+                                    Own custom Tailwind styles
+                                </li>
+                                <li class="mb-3 flex items-center ">
+                                    <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" width="6" height="6" stroke="currentColor" fill="#10b981" viewBox="0 0 1792 1792">
+                                        <path d="M1412 734q0-28-18-46l-91-90q-19-19-45-19t-45 19l-408 407-226-226q-19-19-45-19t-45 19l-91 90q-18 18-18 46 0 27 18 45l362 362q19 19 45 19 27 0 46-19l543-543q18-18 18-45zm252 162q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z">
+                                        </path>
+                                    </svg>
+                                    Unlimited Templates
+                                </li>
+                                <li class="mb-3 flex items-center ">
+                                    <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" width="6" height="6" stroke="currentColor" fill="#10b981" viewBox="0 0 1792 1792">
+                                        <path d="M1412 734q0-28-18-46l-91-90q-19-19-45-19t-45 19l-408 407-226-226q-19-19-45-19t-45 19l-91 90q-18 18-18 46 0 27 18 45l362 362q19 19 45 19 27 0 46-19l543-543q18-18 18-45zm252 162q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z">
+                                        </path>
+                                    </svg>
+                                    Free premium dashboard
+                                </li>
+                                <li class="mb-3 flex items-center ">
+                                    <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" width="6" height="6" stroke="currentColor" fill="#10b981" viewBox="0 0 1792 1792">
+                                        <path d="M1412 734q0-28-18-46l-91-90q-19-19-45-19t-45 19l-408 407-226-226q-19-19-45-19t-45 19l-91 90q-18 18-18 46 0 27 18 45l362 362q19 19 45 19 27 0 46-19l543-543q18-18 18-45zm252 162q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z">
+                                        </path>
+                                    </svg>
+                                    Best ranking
+                                </li>
+                                <li class="mb-3 flex items-center opacity-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" class="h-6 w-6 mr-2" fill="red" viewBox="0 0 1792 1792">
+                                        <path d="M1277 1122q0-26-19-45l-181-181 181-181q19-19 19-45 0-27-19-46l-90-90q-19-19-46-19-26 0-45 19l-181 181-181-181q-19-19-45-19-27 0-46 19l-90 90q-19 19-19 46 0 26 19 45l181 181-181 181q-19 19-19 45 0 27 19 46l90 90q19 19 46 19 26 0 45-19l181-181 181 181q19 19 45 19 27 0 46-19l90-90q19-19 19-46zm387-226q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z">
+                                        </path>
+                                    </svg>
+                                    Prenium svg
+                                </li>
+                                <li class="mb-3 flex items-center opacity-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" class="h-6 w-6 mr-2" fill="red" viewBox="0 0 1792 1792">
+                                        <path d="M1277 1122q0-26-19-45l-181-181 181-181q19-19 19-45 0-27-19-46l-90-90q-19-19-46-19-26 0-45 19l-181 181-181-181q-19-19-45-19-27 0-46 19l-90 90q-19 19-19 46 0 26 19 45l181 181-181 181q-19 19-19 45 0 27 19 46l90 90q19 19 46 19 26 0 45-19l181-181 181 181q19 19 45 19 27 0 46-19l90-90q19-19 19-46zm387-226q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z">
+                                        </path>
+                                    </svg>
+                                    My wife
+                                </li>
+                            </ul>
+                            <button 
+                                type="button"
+                                onclick="checkoutSubmit(this)"
+                                class="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+                                Choose plan
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js"
+            type="text/javascript"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+            },
+            cache: false,
+            error: function (x, status, error) {
+                if (x.status == 500) {
+                    alert("Something went wrong.")
+                    console.log("Something went wrong, Please report this to the administrator.");
+                }
+            }
+
+        });
+        var stripe = Stripe("<?php echo env('STRIPE_KEY'); ?>");
+        function checkoutSubmit(e) {
+            let payment_type = $(e).parents('form').find('#paymentType').val();
+            let amount = $(e).parents('form').find('#amount').val();
+            if (payment_type == 10) {
+                $.ajax({
+                    url: '/order/stripe/add',
+                    type: 'POST',
+                    data: {
+                        'amount': amount,
+                        'payment_type': payment_type
+                    },
+                    dataType: 'JSON',
+                    success: function (data) {
+                        if(data.redirect){
+                            window.location.href = data.redirect;
+                        }
+                    },
+                    error: function (error) {
+                        // location.reload();
+                        console.log('error', error)
+                    }
+                    }).then(function (session) {
+                        return stripe.redirectToCheckout({ sessionId: session.data.id });
+                     })
+                    .then(function (result) {
+                        if (result.error) {
+                            alert(result.error.message);
+                        }
+                    })
+                    .catch(function (error) {
+                    console.error("Error:", error);
+                });
+            }
+            if (payment_type == 20) {
+                $.ajax({
+                    url: '/order/paystack/add',
+                    type: 'POST',
+                    data: {
+                        _token: '{!! csrf_token() !!}',
+                        'amount': amount,
+                        'ref': ref,
+                        'payment-option': payment_type
+                    },
+                    dataType: 'JSON',
+                    success: function (order) {
+                        //console.log(order)
+                    },
+                    error: function (error) {
+                        console.log('Error', error)
+                    }
+                })
+                .then(function (order) {
+                    if (order.order) {
+                        orderId = order.order.id;
+                        paymentOption = order.order.payment_option;
+                        $.ajax({
+                            url: '/products/checkout',
+                            type: 'POST',
+                            data: {
+                                _token: '{!! csrf_token() !!}',
+                                'order': orderId,
+                                'amount': amount,
+                                'payment-option': paymentOption,
+                                'receipt': receipt
+                            },
+                            dataType: 'JSON',
+                            success: function (data) {
+                                $('#confirm_order_btn').attr('disabled', false);
+                                if (data.data) {
+                                    window.location.href = data.data
+                                }
+                            },
+                            error: function (error) {
+
+                                console.log('Error', error)
+                            }
+                        });
+                    }
+                });
+            }
+        }
+    </script>
 </html>

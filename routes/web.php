@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Payments\Http\Controllers\PaymentsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('/order/stripe/add', [PaymentsController::class, 'addStripePayment'])->name('stripe.add');
 
 Route::middleware([
     'auth:sanctum',
