@@ -43,3 +43,52 @@ final class UserType
         ];
     }
 }
+
+final class PaymentOption
+{
+    const STRIPE = '10';
+    const FLUTTERWAVE = '20';
+
+    /**
+     * Returns respective value.
+     *
+     * @param $x
+     *
+     * @return null
+     */
+    public static function getValue($x)
+    {
+        $value = null;
+        switch ($x) {
+            case '10':
+                $value = __('Stripe');
+                break;
+            case '20':
+                $value = __('Flutterwave');
+                break;
+        }
+        return $value;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getAll()
+    {
+        return [
+            self::STRIPE => PaymentOption::getValue(self::STRIPE),
+            self::FLUTTERWAVE => PaymentOption::getValue(self::FLUTTERWAVE)
+        ];
+    }
+}
+
+/**
+ * Class OrderStatus
+ */
+final class OrderStatus
+{
+    CONST NEW = '10';
+    CONST PAYMENT_PENDING = '20';
+    CONST PAYMENT_FAILED = '30';
+    CONST SUCCESS = '40';
+}
