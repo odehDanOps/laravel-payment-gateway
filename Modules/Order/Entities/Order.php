@@ -20,7 +20,7 @@ class Order extends BaseModel
     /**
      * Default Currency for Order.
      */
-    const DEFAULT_CURRENCY = "NGN";
+    const DEFAULT_CURRENCY = "USD";
     
     protected static function newFactory()
     {

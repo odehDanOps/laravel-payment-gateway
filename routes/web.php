@@ -18,7 +18,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/order/stripe/add', [PaymentsController::class, 'addStripePayment'])->name('stripe.add');
+Route::post('/stripe/checkout', [PaymentsController::class, 'checkoutStripePayment'])->name('stripe.checkout');
+Route::post('/order/flutterwave/add', [PaymentsController::class, 'addFlutterwavePaymentOrder'])->name('paystack.addOrder');
+Route::post('/flutterwave/checkout', [PaymentsController::class, 'checkoutFlutterwavePayment'])->name('paystack.checkout');
 
 Route::middleware([
     'auth:sanctum',

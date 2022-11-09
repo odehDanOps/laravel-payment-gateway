@@ -160,7 +160,7 @@
             let amount = $(e).parents('form').find('#amount').val();
             if (payment_type == 10) {
                 $.ajax({
-                    url: '/order/stripe/add',
+                    url: '/stripe/checkout',
                     type: 'POST',
                     data: {
                         'amount': amount,
@@ -190,17 +190,16 @@
             }
             if (payment_type == 20) {
                 $.ajax({
-                    url: '/order/paystack/add',
+                    url: '/order/flutterwave/add',
                     type: 'POST',
                     data: {
                         _token: '{!! csrf_token() !!}',
                         'amount': amount,
-                        'ref': ref,
-                        'payment-option': payment_type
+                        'payment_type': payment_type
                     },
                     dataType: 'JSON',
                     success: function (order) {
-                        //console.log(order)
+                        console.log(order)
                     },
                     error: function (error) {
                         console.log('Error', error)
@@ -211,24 +210,22 @@
                         orderId = order.order.id;
                         paymentOption = order.order.payment_option;
                         $.ajax({
-                            url: '/products/checkout',
+                            url: '/flutterwave/checkout',
                             type: 'POST',
                             data: {
                                 _token: '{!! csrf_token() !!}',
                                 'order': orderId,
                                 'amount': amount,
-                                'payment-option': paymentOption,
-                                'receipt': receipt
+                                'payment_type': payment_type
                             },
                             dataType: 'JSON',
                             success: function (data) {
-                                $('#confirm_order_btn').attr('disabled', false);
-                                if (data.data) {
-                                    window.location.href = data.data
-                                }
+                                console.log(data)
+                                // if (data.data) {
+                                //     window.location.href = data.data
+                                // }
                             },
                             error: function (error) {
-
                                 console.log('Error', error)
                             }
                         });

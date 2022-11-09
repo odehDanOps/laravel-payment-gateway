@@ -3,9 +3,11 @@
 namespace App\PaymentGateway;
 
 use App\PaymentGateway\Helpers\PaymentProvider;
-use App\Payments\PaymentGatewayService as Service;
+use App\Contracts\Payments\PaymentGatewayService as Service;
+
+use Modules\Order\Entities\Order;
  
-class FlutterwaveService extends Service
+class FlutterwaveService implements Service
 {
     /**
      * Set secret key.
@@ -24,7 +26,7 @@ class FlutterwaveService extends Service
      * @param  string  $public_key
      * @return string
      */
-    public function setPublicKey($public_key){
+    public function setPublicKey($_public_key){
 		$public_key = config($_public_key);
     	return  $public_key;
 	}
@@ -113,9 +115,8 @@ class FlutterwaveService extends Service
 		$request["payment_options"] = "card";
 
 		$request["customer"] = [
-			"email" => $meta_data['email'],
-			"phonenumber" => $meta_data['mobile'] ?? null,
-			"name" => $meta_data['first_name']. " " .$meta_data['last_name'],
+			"email" => "hi@danops.dev",
+			"name" => $meta['first_name']. " " .$meta['last_name'],
 		];
 
 		$request["customizations"] = [
