@@ -3,10 +3,10 @@
 namespace App\PaymentGateway;
 
 use App\PaymentGateway\Helpers\PaymentProvider;
-use App\Payments\PaymentGatewayService as Service;
+use App\Contracts\Payments\PaymentGatewayService as Service;
 use Stripe\Stripe;
  
-class StripeService extends Service
+class StripeService implements Service
 {
     /**
      * Set secret key.

@@ -18,10 +18,10 @@ return new class extends Migration
             $table->string('ref_transaction_id', 255)->nullable();
             $table->string('ref_order_id', 255)->nullable();
             $table->string('ref_id', 255)->nullable();
+            $table->string('email')->nullable();
             $table->decimal('amount', 8, 2);
             $table->string('currency', 4);
             $table->enum('payment_option', [10, 20])->default(10);
-            $table->decimal('tax', 8, 2)->nullable();
             $table->enum('status', [10, 20, 30, 40])->default(10);
             $table->bigInteger('created_at');
             $table->bigInteger('updated_at');

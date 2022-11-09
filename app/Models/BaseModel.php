@@ -9,4 +9,13 @@ class BaseModel extends Model
 {
     use HasFactory;
 
+    /**
+     * @var bool
+     */
+    public $timestamps = true;
+
+    /**
+     * @var string
+     */
+    protected $dateFormat = 'U';
 }
